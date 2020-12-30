@@ -1,8 +1,5 @@
 # quick-paper - 📚 用于快速构建文档的前端框架
 
-<p align="center"><a href="https://hai2007.gitee.io/quick-paper/" target="_blank">
-<img width="400" src="https://hai2007.gitee.io/quick-paper/src/assets/quick-paper.png" alt="quick-paper logo"></a></p>
-
 <p>
   <a href="https://hai2007.gitee.io/npm-downloads?interval=7&packages=quick-paper"><img src="https://img.shields.io/npm/dm/quick-paper.svg" alt="downloads"></a>
   <a href="https://packagephobia.now.sh/result?p=quick-paper"><img src="https://packagephobia.now.sh/badge?p=quick-paper" alt="install size"></a>

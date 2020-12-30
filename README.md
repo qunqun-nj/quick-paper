@@ -5,7 +5,7 @@
   <a href="https://packagephobia.now.sh/result?p=quick-paper"><img src="https://packagephobia.now.sh/badge?p=quick-paper" alt="install size"></a>
   <a href="https://www.jsdelivr.com/package/npm/quick-paper"><img src="https://data.jsdelivr.com/v1/package/npm/quick-paper/badge" alt="CDN"></a>
   <a href="https://www.npmjs.com/package/quick-paper"><img src="https://img.shields.io/npm/v/quick-paper.svg" alt="Version"></a>
-  <a href="https://github.com/quick-paper/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/quick-paper.svg" alt="License"></a>
+  <a href="https://github.com/hai2007/quick-paper/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/quick-paper.svg" alt="License"></a>
 </p>
 
 ## 联系我们

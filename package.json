@@ -4,7 +4,7 @@
   "description": "📚 用于快速构建文档的前端框架。 ",
   "main": "dist/quick-paper.min.js",
   "scripts": {
-    "build": "node build.js",
+    "build": "hai2007_nodejs -d dist && node build.js",
     "start": "npm install && npm run build"
   },
   "repository": {
@@ -26,7 +26,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "cuf": "^1.2.0",
+    "@hai2007/nodejs": "^0.1.0",
     "rollup": "^1.17.0",
     "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-node-resolve": "^5.2.0",

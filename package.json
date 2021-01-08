@@ -34,6 +34,9 @@
   },
   "dependencies": {
     "@hai2007/algorithm": "^0.5.0",
-    "@hai2007/tool": "^0.4.0"
+    "@hai2007/tool": "^0.4.0",
+    "hash-sum": "^2.0.0",
+    "loader-utils": "^2.0.0",
+    "webpack": "^4.41.2"
   }
 }

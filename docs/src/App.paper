@@ -1,0 +1,13 @@
+<template>
+    Quick Paper
+</template>
+<script>
+    export default {
+
+    };
+</script>
+<style lang="scss">
+    .quickpaper {
+        color: red;
+    }
+</style>

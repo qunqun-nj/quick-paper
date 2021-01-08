@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "@hai2007/style": "^0.2.1",
-    "clunch": "^0.2.2"
+    "clunch": "^1.0.1"
   }
 }

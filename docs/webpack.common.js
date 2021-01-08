@@ -18,7 +18,7 @@ module.exports = {
             exclude: /node_modules/,
             loader: "babel-loader"
         }, {
-            test: /\.QuickPaper$/,
+            test: /\.paper$/,
             exclude: /node_modules/,
             loader: ['../loader/index.js']
         }, {

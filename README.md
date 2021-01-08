@@ -19,7 +19,34 @@
 npm install --save quick-paper
 ```
 
-安装好了以后，在需要的地方引入即可：
+然后，我们需要配置```webpack```如何解析```.paper```文件：
+
+```js
+// webpack.config.js
+const QuickPaperLoaderPlugin = require('quick-paper/loader-plug/index.js');
+
+module.exports = {
+    // ......
+     module: {
+        rules: [{
+            test: /\.paper$/,
+            exclude: /node_modules/,
+            loader: ['quick-paper/loader/index.js']
+        },{
+            test: /\.(css|scss)$/,
+            loader: ['quick-paper/style-loader/index.js', 'css-loader', 'postcss-loader', 'sass-loader']
+        },
+            // ......
+        ]
+     },
+    plugins: [
+        new QuickPaperLoaderPlugin()
+    ]
+    // ......
+};
+```
+
+配置好了以后，在需要的地方引入即可：
 
 ```js
 import QuickPaper from 'quick-paper';
@@ -31,7 +58,7 @@ QuickPaper设计的思想是组件，一个完整的页面由一系列并列或�
 // 引入别的组件
 // 在这个组件里面，又可以引入组件，这样一层层拼接
 // 当然，每次并列引入的组件理论上可以任意多
-import App from './App.QuickPaper';
+import App from './App.paper';
 
 // 根对象
 window.quickPaper = new QuickPaper({

@@ -15,6 +15,7 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
     // 对象初始化
     QuickPaper.prototype.$$init = function () {
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      this._options = options;
     };
   }
   /**

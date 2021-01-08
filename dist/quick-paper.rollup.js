@@ -15,6 +15,7 @@
         // 对象初始化
         QuickPaper.prototype.$$init = function (options = {}) {
 
+            this._options = options;
 
 
         };

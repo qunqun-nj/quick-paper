@@ -2,10 +2,10 @@ import QuickPaper from 'quick-paper';
 
 // 引入样式
 import '@hai2007/style/normalize.css';
+import './assets/style.scss';
+import '@hai2007/style/doc-view.css'
 
 import App from './App.paper';
-
-console.log(App);
 
 //根对象
 window.quickPaper = new QuickPaper({
@@ -14,6 +14,6 @@ window.quickPaper = new QuickPaper({
     el: document.getElementById('root'),
 
     // 启动页面
-    render: App
+    render: createElement => createElement(App)
 
 });

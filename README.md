@@ -74,7 +74,7 @@ window.quickPaper = new QuickPaper({
 });
 ```
 
-你可能会好奇App.QuickPaper的格式：
+你可能会好奇App.paper的格式：
 
 ```html
 <template>

@@ -1,13 +1,118 @@
 <template>
-    Quick Paper
+    <div>
+        <header>
+            Quick Paper
+        </header>
+        <span>说明&amp;指南</span>
+        <ul>
+            <li @click='loadpage("guide")'>写在前面</li>
+            <li @click='loadpage("environment")'>基于webpack开发</li>
+            <li @click='loadpage("directive")'>自定义指令强化标签属性</li>
+        </ul>
+
+        <span>内置接口</span>
+        <ul>
+            <li @click='loadpage("innerApiDirective")'>单一的内置指令</li>
+            <li @click='loadpage("innerApiComponent")'>单一的内置组件</li>
+        </ul>
+
+        <footer onclick='window.location.href="https://github.com/hai2007/quick-paper"'>
+            Fork Me On GitHub
+        </footer>
+    </div>
+    <div>
+        <component :is='page'></component>
+    </div>
 </template>
 <script>
-    export default {
 
+    let pages = {
+        guide: () => import('./pages/guide.paper'),
+        environment: () => import('./pages/environment.paper'),
+        directive: () => import('./pages/directive.paper'),
+
+        // 内置接口
+        innerApiDirective: () => import('./pages/inner-api/directive.paper'),
+        innerApiComponent: () => import('./pages/inner-api/component.paper')
+    };
+
+    export default {
+        data() {
+            return {
+                page: null
+            };
+        },
+        created() {
+            this.loadpage('guide');
+        },
+        methods: {
+            loadpage(url) {
+                pages[url]().then(data => {
+                    this.page = data.default;
+                });;
+            }
+        }
     };
 </script>
 <style lang="scss">
     .quickpaper {
-        color: red;
+        &>div {
+            display: inline-block;
+            vertical-align: top;
+            padding: .2rem;
+            height: 100vh;
+            overflow: auto;
+
+            &:last-child {
+                width: calc(100vw - 2.6rem);
+            }
+
+            &:first-child {
+                background: #fafafa;
+                width: 2.6rem;
+
+                &>header {
+                    margin-bottom: .4rem;
+                    font-size: .25rem;
+                    text-align: center;
+                    color: #d66eac;
+                    padding-top: 1.4rem;
+                    background-image: url(./assets/logo.png);
+                    background-repeat: no-repeat;
+                    background-position: center top;
+                    cursor: pointer;
+                }
+
+                &>span {
+                    color: #454545;
+                    font-size: .18rem;
+                    margin-top: .2rem;
+                    display: block;
+                }
+
+                &>ul {
+                    margin-top: .2rem;
+
+                    &>li {
+                        color: #2194CE;
+                        text-decoration: none;
+                        line-height: 1.8em;
+                        cursor: pointer;
+                        position: relative;
+                    }
+                }
+
+                &>footer {
+                    background-color: #529bcf;
+                    color: white;
+                    text-align: center;
+                    line-height: 0.3rem;
+                    margin-top: .3rem;
+                    cursor: pointer;
+                }
+            }
+
+
+        }
     }
 </style>

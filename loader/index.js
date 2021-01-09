@@ -39,14 +39,14 @@ module.exports = function loader(source) {
                 code = "";
             }
         } else if (incomingQuery.type == 'script') {
-            if (code != null) {
+            if (code == null) {
                 if (/\/\*quickpaper-loader-es\*\/$/.test(source)) {
                     code = source;
                 } else {
                     code = 'export default {};';
                 }
             } else {
-                code = "\n/*quickpaper-loader-es*/";
+                code += "\n/*quickpaper-loader-es*/";
             }
         }
 

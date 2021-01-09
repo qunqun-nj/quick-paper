@@ -1,0 +1,82 @@
+<template>
+    <div class="doc-view">
+        <h2>基于webpack开发</h2>
+        <p>
+            首先你需要通过命令行安装QuickPaper，就像这样：
+        </p>
+        <pre q-code>npm install --save quick-paper</pre>
+        <p>
+            然后，我们需要配置webpack如何解析.paper文件：
+        </p>
+        <pre q-code>
+// webpack.config.js
+const QuickPaperLoaderPlugin = require('quick-paper/loader-plug/index.js');
+
+module.exports = {
+    // ......
+     module: {
+        rules: [{
+            test: /\.paper$/,
+            exclude: /node_modules/,
+            loader: ['quick-paper/loader/index.js']
+        },{
+            test: /\.(css|scss)$/,
+            loader: ['quick-paper/style-loader/index.js', 'css-loader', 'postcss-loader', 'sass-loader']
+        },
+            // ......
+        ]
+     },
+    plugins: [
+        new QuickPaperLoaderPlugin()
+    ]
+    // ......
+};
+        </pre>
+        <p>
+            配置好了以后，在需要的地方引入即可：
+        </p>
+        <pre q-code>
+import QuickPaper from 'quick-paper';
+        </pre>
+        <p>
+            QuickPaper设计的思想是组件，一个完整的页面由一系列并列或包含的组件拼接而成，但是，根组件只有一个：
+        </p>
+        <pre q-code>
+// 引入别的组件
+// 在这个组件里面，又可以引入组件，这样一层层拼接
+// 当然，每次并列引入的组件理论上可以任意多
+import App from './App.paper';
+
+// 根对象
+window.quickPaper = new QuickPaper({
+
+  // 挂载点
+  el: document.getElementById('root'),
+
+  // 配置启动方法
+  render: createElement => createElement(App),
+
+  // 还可以添加方法或生命周期钩子等
+
+});
+        </pre>
+        <p>
+            你可能会好奇App.paper的格式：
+        </p>
+        <pre q-code='html'>
+<template>
+    <!-- 页面模板 -->
+</template>
+
+<script>
+export default {
+    /*类似控制器的地方*/
+};
+</script>
+
+<style>
+    /*写样式的地方*/
+</style>
+        </pre>
+    </div>
+</template>

@@ -56,7 +56,7 @@
     };
 </script>
 <style lang="scss">
-    .quickpaper {
+    [quickpaper] {
         &>div {
             display: inline-block;
             vertical-align: top;

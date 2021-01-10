@@ -1,14 +1,13 @@
-<template>
-    <div class="doc-view">
-        <h2>自定义指令强化标签属性</h2>
-        <p>
-            组件是强化原生标签，指令是强化原生属性，因此用法和原生属性类似，比如我们有一个属性name：
-        </p>
-        <pre q-code='html'><input name /></pre>
-        <p>
-            如何自定义指令？自定义指令和组件类似，比如使用Quick Paper上的方法：
-        </p>
-        <pre q-code>
+<template class="doc-view">
+    <h2>自定义指令强化标签属性</h2>
+    <p>
+        组件是强化原生标签，指令是强化原生属性，因此用法和原生属性类似，比如我们有一个属性name：
+    </p>
+    <pre q-code='html'><input name /></pre>
+    <p>
+        如何自定义指令？自定义指令和组件类似，比如使用Quick Paper上的方法：
+    </p>
+    <pre q-code>
 QuickPaper.directive('qDemo',{
 
     // 指令生效的时候
@@ -20,11 +19,11 @@ QuickPaper.directive('qDemo',{
     // 只调用一次，指令与元素解绑时调用
     delete:function(el,binding){}
 });
-        </pre>
-        <p>
-            我们来看看binding中有什么：
-        </p>
-        <pre q-code>
+    </pre>
+    <p>
+        我们来看看binding中有什么：
+    </p>
+    <pre q-code>
 binding={
 
     // 当前Quick Paper对象
@@ -39,9 +38,8 @@ binding={
     // 比如q-attr:XXX,表示的就是XXX
     type
 }
-        </pre>
-        <p>
-            当然，指令和组件一样，也支持局部挂载。
-        </p>
-    </div>
+    </pre>
+    <p>
+        当然，指令和组件一样，也支持局部挂载。
+    </p>
 </template>

@@ -18,9 +18,7 @@ module.exports = function (template, tagName) {
             // html
             if (tagName == 'template') {
                 child.name = "div";
-                child.attrs = {
-                    class: 'quickpaper'
-                };
+                child.attrs['quickpaper'] = "";
                 return {
                     xhtmlJson,
                     pnode: child

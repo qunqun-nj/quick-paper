@@ -16,7 +16,15 @@ export default {
             readonly: true,
 
             // 着色语言
-            shader: [binding.exp || 'javascript'],
+            shader: [binding.exp || 'javascript', {
+                insign: "#000000",
+                "css": {
+                    insign: "#000000"
+                },
+                "javascript": {
+                    insign: "#000000"
+                }
+            }],
 
             // 设置颜色
             color: {

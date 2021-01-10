@@ -43,6 +43,7 @@
             };
         },
         created() {
+            console.log(1);
             this.loadpage('guide');
         },
         methods: {

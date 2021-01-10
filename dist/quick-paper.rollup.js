@@ -1,5 +1,5 @@
 /*!
-* quick-paper v0.1.0
+* quick-paper v0.1.1
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */
@@ -1483,7 +1483,15 @@
                 readonly: true,
 
                 // 着色语言
-                shader: [binding.exp || 'javascript'],
+                shader: [binding.exp || 'javascript', {
+                    insign: "#000000",
+                    "css": {
+                        insign: "#000000"
+                    },
+                    "javascript": {
+                        insign: "#000000"
+                    }
+                }],
 
                 // 设置颜色
                 color: {

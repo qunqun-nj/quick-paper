@@ -1,6 +1,6 @@
 {
   "name": "quick-paper",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "📚 用于快速构建文档的前端框架。 ",
   "main": "dist/quick-paper.min.js",
   "scripts": {
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/hai2007/quick-paper/issues"
   },
-  "homepage": "https://github.com/hai2007/quick-paper#readme",
+  "homepage": "https://hai2007.gitee.io/quick-paper/",
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",

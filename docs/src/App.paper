@@ -57,7 +57,10 @@
 </script>
 <style lang="scss">
     [quickpaper] {
+        white-space: nowrap;
+
         &>div {
+            white-space: normal;
             display: inline-block;
             vertical-align: top;
             padding: .2rem;

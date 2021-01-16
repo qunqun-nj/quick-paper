@@ -10,10 +10,13 @@ module.exports = function (template, tagName) {
         if (child.name == tagName) {
 
             // javascript
-            if (tagName == 'script') return xhtmlJson[child.childNodes[0]].content;
-
-            // css
-            if (tagName == 'style') return xhtmlJson[child.childNodes[0]].content;
+            if (tagName == 'script' || tagName == 'style') {
+                try {
+                    return xhtmlJson[child.childNodes[0]].content;
+                } catch (e) {
+                    return "";
+                }
+            }
 
             // html
             if (tagName == 'template') {

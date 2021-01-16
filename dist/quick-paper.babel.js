@@ -9,7 +9,7 @@ function _defineProperty2(obj, key, value) { if (key in obj) { Object.defineProp
 function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 /*!
-* quick-paper v0.2.0
+* quick-paper v0.2.1
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */
@@ -106,12 +106,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
   var isString = _isString; // 引用类型
 
-  var isFunction = _isFunction;
-
-  var isArray = function isArray(input) {
-    return Array.isArray(input);
-  }; // 结点类型
-
+  var isFunction = _isFunction; // 结点类型
 
   var isElement = function isElement(input) {
     return domTypeHelp([1, 9, 11], input);
@@ -306,6 +301,41 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
     return newTagName;
   }
+
+  var toString$1 = Object.prototype.toString;
+  /**
+   * 获取一个值的类型字符串[object type]
+   *
+   * @param {*} value 需要返回类型的值
+   * @returns {string} 返回类型字符串
+   */
+
+  function getType$1(value) {
+    if (value == null) {
+      return value === undefined ? '[object Undefined]' : '[object Null]';
+    }
+
+    return toString$1.call(value);
+  }
+  /**
+   * 判断一个值是不是String。
+   *
+   * @param {*} value 需要判断类型的值
+   * @returns {boolean} 如果是String返回true，否则返回false
+   */
+
+
+  function _isString$1(value) {
+    var type = _typeof2(value);
+
+    return type === 'string' || type === 'object' && value != null && !Array.isArray(value) && getType$1(value) === '[object String]';
+  }
+
+  var isString$1 = _isString$1;
+
+  var isArray = function isArray(input) {
+    return Array.isArray(input);
+  };
 
   var $RegExp = {
     // 空白字符:http://www.w3.org/TR/css3-selectors/#whitespace
@@ -511,7 +541,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
                     var tempKey = nextNValue(len - 1); // 如果不是有前置.，那就是需要求解了
 
                     var tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
-                    expressArray.push(isString(tempValue) ? tempValue + "@string" : tempValue);
+                    expressArray.push(isString$1(tempValue) ? tempValue + "@string" : tempValue);
                   }
 
                   i += len - 2;
@@ -718,7 +748,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           if (flag == 0) {
             var _value = evalValue(doit1(target, temp));
 
-            newExpressArray.push(isString(_value) ? _value + '@string' : _value);
+            newExpressArray.push(isString$1(_value) ? _value + '@string' : _value);
             temp = [];
           }
         } else {
@@ -769,7 +799,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
             var tempValue = evalValue(temp);
             var _value = newExpressArray[newExpressArray.length - 1][tempValue];
-            newExpressArray[newExpressArray.length - 1] = isString(_value) ? _value + "@string" : _value; // 状态恢复
+            newExpressArray[newExpressArray.length - 1] = isString$1(_value) ? _value + "@string" : _value; // 状态恢复
 
             flag = false;
           } else {
@@ -1552,6 +1582,11 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           t.appendChild(r);
           return r;
         },
+        prependTo: function e(t, n) {
+          var r = _(n) ? n : this.toNode(n);
+          t.insertBefore(r, t.childNodes[0]);
+          return r;
+        },
         remove: function e(t) {
           t.parentNode.removeChild(t);
         },
@@ -1762,8 +1797,8 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
               f.after(e[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
             }
           } else {
-            for (var o = 0; o < this.__formatData.length - this.__diff.endNum; o++) {
-              f.appendTo(this.__showDOM, this.$$toTemplate(this.__formatData[o], o, this._noLineNumber));
+            for (var o = this.__formatData.length - this.__diff.endNum - 1; o >= 0; o--) {
+              f.prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[o], o, this._noLineNumber));
             }
           }
 
@@ -2830,7 +2865,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         return t;
       };
 
-      var z = {
+      var B = {
         text: "#000000",
         annotation: "#6a9955",
         insign: "#ffffff",
@@ -2838,7 +2873,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         attrKey: "#1e83b1",
         attrValue: "#ac4c1e"
       };
-      var B = {
+      var z = {
         annotation: "#6a9955",
         insign: "#ffffff",
         selector: "#1e50b3",
@@ -2860,12 +2895,12 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         var n, r;
 
         if (e == "html") {
-          t._css = W(B, t.css);
+          t._css = W(z, t.css);
           t._javascript = W(H, t.javascript);
-          r = W(z, t);
+          r = W(B, t);
           n = I;
         } else if (e == "css") {
-          r = W(B, t);
+          r = W(z, t);
           n = j;
         } else if (e == "javascript") {
           r = W(H, t);

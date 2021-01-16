@@ -1,6 +1,6 @@
 {
   "name": "quick-paper",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "📚 用于快速构建文档的前端框架。 ",
   "main": "dist/quick-paper.min.js",
   "scripts": {
@@ -34,10 +34,10 @@
   },
   "dependencies": {
     "@hai2007/algorithm": "^0.5.0",
-    "@hai2007/tool": "^0.4.0",
+    "@hai2007/tool": "^0.6.0",
     "hash-sum": "^2.0.0",
     "loader-utils": "^2.0.0",
-    "open-web-editor": "^0.2.0",
+    "open-web-editor": "^0.2.2",
     "webpack": "^4.41.2"
   }
 }

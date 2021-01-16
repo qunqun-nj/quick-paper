@@ -108,3 +108,6 @@ new QuickPaper(
 );
     </pre>
 </template>
+<style lang="scss">
+
+</style>

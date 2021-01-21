@@ -9,7 +9,7 @@ function _defineProperty2(obj, key, value) { if (key in obj) { Object.defineProp
 function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 /*!
-* quick-paper v0.2.1
+* quick-paper v0.2.2
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */
@@ -106,7 +106,12 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
   var isString = _isString; // 引用类型
 
-  var isFunction = _isFunction; // 结点类型
+  var isFunction = _isFunction;
+
+  var isArray = function isArray(input) {
+    return Array.isArray(input);
+  }; // 结点类型
+
 
   var isElement = function isElement(input) {
     return domTypeHelp([1, 9, 11], input);
@@ -301,41 +306,6 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
     return newTagName;
   }
-
-  var toString$1 = Object.prototype.toString;
-  /**
-   * 获取一个值的类型字符串[object type]
-   *
-   * @param {*} value 需要返回类型的值
-   * @returns {string} 返回类型字符串
-   */
-
-  function getType$1(value) {
-    if (value == null) {
-      return value === undefined ? '[object Undefined]' : '[object Null]';
-    }
-
-    return toString$1.call(value);
-  }
-  /**
-   * 判断一个值是不是String。
-   *
-   * @param {*} value 需要判断类型的值
-   * @returns {boolean} 如果是String返回true，否则返回false
-   */
-
-
-  function _isString$1(value) {
-    var type = _typeof2(value);
-
-    return type === 'string' || type === 'object' && value != null && !Array.isArray(value) && getType$1(value) === '[object String]';
-  }
-
-  var isString$1 = _isString$1;
-
-  var isArray = function isArray(input) {
-    return Array.isArray(input);
-  };
 
   var $RegExp = {
     // 空白字符:http://www.w3.org/TR/css3-selectors/#whitespace
@@ -541,7 +511,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
                     var tempKey = nextNValue(len - 1); // 如果不是有前置.，那就是需要求解了
 
                     var tempValue = tempKey in scope ? scope[tempKey] : target[tempKey];
-                    expressArray.push(isString$1(tempValue) ? tempValue + "@string" : tempValue);
+                    expressArray.push(isString(tempValue) ? tempValue + "@string" : tempValue);
                   }
 
                   i += len - 2;
@@ -748,7 +718,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           if (flag == 0) {
             var _value = evalValue(doit1(target, temp));
 
-            newExpressArray.push(isString$1(_value) ? _value + '@string' : _value);
+            newExpressArray.push(isString(_value) ? _value + '@string' : _value);
             temp = [];
           }
         } else {
@@ -799,7 +769,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
             var tempValue = evalValue(temp);
             var _value = newExpressArray[newExpressArray.length - 1][tempValue];
-            newExpressArray[newExpressArray.length - 1] = isString$1(_value) ? _value + "@string" : _value; // 状态恢复
+            newExpressArray[newExpressArray.length - 1] = isString(_value) ? _value + "@string" : _value; // 状态恢复
 
             flag = false;
           } else {
@@ -1518,7 +1488,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       };
 
       var a = i;
-      var c = o;
+      var f = o;
 
       var u = function e(t) {
         return Array.isArray(t);
@@ -1528,7 +1498,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         return s([1, 9, 11], t);
       };
 
-      var f = {
+      var h = {
         stopPropagation: function e(t) {
           t = t || window.event;
 
@@ -1636,7 +1606,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         }
       };
 
-      function h(e) {
+      function c(e) {
         this.__helpCalcDOM.innerText = e;
         return this.__helpCalcDOM.offsetWidth;
       }
@@ -1698,7 +1668,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       function N() {
         var t = this;
         this._el.innerHTML = "";
-        f.css(this._el, {
+        h.css(this._el, {
           "font-size": "12px",
           position: "relative",
           cursor: "text",
@@ -1706,13 +1676,13 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           background: this._colorBackground,
           overflow: "auto"
         });
-        f.bind(this._el, "click", function () {
+        h.bind(this._el, "click", function () {
           setTimeout(function () {
             t.__focusDOM.focus();
           });
         });
-        this.__helpCalcDOM = f.appendTo(this._el, "<span></span>");
-        f.css(this.__helpCalcDOM, {
+        this.__helpCalcDOM = h.appendTo(this._el, "<span></span>");
+        h.css(this.__helpCalcDOM, {
           position: "absolute",
           "z-index": "-1",
           "white-space": "pre",
@@ -1721,19 +1691,19 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           color: "rgba(0,0,0,0)",
           "font-weight": this._fontWeight
         });
-        this.__helpInputDOM = f.appendTo(this._el, "<div></div>");
-        f.css(this.__helpInputDOM, {
+        this.__helpInputDOM = h.appendTo(this._el, "<div></div>");
+        h.css(this.__helpInputDOM, {
           position: "absolute",
           "z-index": 1
         });
-        f.bind(this.__helpInputDOM, "click", function (e) {
-          f.stopPropagation(e);
-          f.preventDefault(e);
+        h.bind(this.__helpInputDOM, "click", function (e) {
+          h.stopPropagation(e);
+          h.preventDefault(e);
 
           t.__focusDOM.focus();
         });
-        this.__focusDOM = f.appendTo(this._el, "<textarea></textarea>");
-        f.css(this.__focusDOM, {
+        this.__focusDOM = h.appendTo(this._el, "<textarea></textarea>");
+        h.css(this.__focusDOM, {
           position: "absolute",
           width: "6px",
           "margin-top": "3px",
@@ -1747,7 +1717,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           background: "rgba(0,0,0,0)",
           color: this._colorCursor
         });
-        f.attr(this.__focusDOM, {
+        h.attr(this.__focusDOM, {
           wrap: "off",
           autocorrect: "off",
           autocapitalize: "off",
@@ -1755,17 +1725,17 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         });
 
         if (this._readonly) {
-          f.attr(this.__focusDOM, {
+          h.attr(this.__focusDOM, {
             readonly: true
           });
         }
 
-        this.__showDOM = f.appendTo(this._el, "<div></div>");
-        f.css(this.__showDOM, {
+        this.__showDOM = h.appendTo(this._el, "<div></div>");
+        h.css(this.__showDOM, {
           padding: "10px 0"
         });
-        this.__selectCanvas = f.appendTo(this._el, "<canvas></canvas>");
-        f.css(this.__selectCanvas, {
+        this.__selectCanvas = h.appendTo(this._el, "<canvas></canvas>");
+        h.css(this.__selectCanvas, {
           position: "absolute",
           left: "40px",
           top: "10px",
@@ -1775,7 +1745,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
 
       function g() {
-        f.css(this.__focusDOM, {
+        h.css(this.__focusDOM, {
           left: 40 + this.$$textWidth(this._contentArray[this.__lineNum]) + "px",
           top: 10 + this.__lineNum * 21 + "px"
         });
@@ -1789,16 +1759,16 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           var t = e.length;
 
           for (var r = t - this.__diff.endNum - 1; r >= this.__diff.beginNum; r--) {
-            f.remove(e[r]);
+            h.remove(e[r]);
           }
 
           if (this.__diff.beginNum > 0) {
             for (var i = this.__formatData.length - 1 - this.__diff.endNum; i >= this.__diff.beginNum; i--) {
-              f.after(e[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
+              h.after(e[this.__diff.beginNum - 1], this.$$toTemplate(this.__formatData[i], i, this._noLineNumber));
             }
           } else {
             for (var o = this.__formatData.length - this.__diff.endNum - 1; o >= 0; o--) {
-              f.prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[o], o, this._noLineNumber));
+              h.prependTo(this.__showDOM, this.$$toTemplate(this.__formatData[o], o, this._noLineNumber));
             }
           }
 
@@ -1875,7 +1845,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       function w() {
         this.__cursorTop = this.__lineNum * 21 + 10;
         this.__cursorLeft = 40 + this.$$textWidth(this._contentArray[this.__lineNum].substring(0, this.__leftNum));
-        f.css(this.__focusDOM, {
+        h.css(this.__focusDOM, {
           top: this.__cursorTop + "px",
           left: this.__cursorLeft + "px"
         });
@@ -1887,11 +1857,11 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           t = this._el.scrollHeight - 10;
         }
 
-        f.css(this.__selectCanvas, {
+        h.css(this.__selectCanvas, {
           width: e + "px",
           height: t + "px"
         });
-        f.attr(this.__selectCanvas, {
+        h.attr(this.__selectCanvas, {
           width: e,
           height: t
         });
@@ -2043,7 +2013,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         var t = false;
 
         var n = function e(t) {
-          var n = f.position(a._el, t);
+          var n = h.position(a._el, t);
           var r = Math.round((n.y - 20.5) / 21);
           if (r < 0) r = 0;
           if (r >= a._contentArray.length) r = a._contentArray.length - 1;
@@ -2080,26 +2050,26 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           return r;
         };
 
-        f.bind(this._el, "mousedown", function (e) {
+        h.bind(this._el, "mousedown", function (e) {
           t = true;
           a.__cursor2 = a.__cursor1 = n(e);
           a.$$updateCanvasSize();
           a.$$updateSelectView();
         });
-        f.bind(this._el, "mousemove", function (e) {
+        h.bind(this._el, "mousemove", function (e) {
           if (!t) return;
           a.__cursor2 = n(e);
           a.$$updateSelectView();
         });
-        f.bind(this._el, "mouseup", function () {
+        h.bind(this._el, "mouseup", function () {
           return t = false;
         });
-        f.bind(this._el, "mouseout", function () {
+        h.bind(this._el, "mouseout", function () {
           return t = false;
         });
-        f.bind(this._el, "click", function (e) {
+        h.bind(this._el, "click", function (e) {
           a.__helpInputDOM.innerHTML = "";
-          var t = f.position(a._el, e);
+          var t = h.position(a._el, e);
           var n = Math.round((t.y - 20.5) / 21);
           if (n < 0 || n >= a._contentArray.length) return;
           a.__lineNum = n;
@@ -2155,12 +2125,12 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           a.__updated__();
         };
 
-        f.bind(this.__focusDOM, "compositionstart", function () {
+        h.bind(this.__focusDOM, "compositionstart", function () {
           a.__needUpdate = false;
           a.__focusDOM.style.color = "rgba(0,0,0,0)";
           a.__focusDOM.style.borderLeft = "1px solid " + a._colorCursor;
         });
-        f.bind(this.__focusDOM, "compositionend", function () {
+        h.bind(this.__focusDOM, "compositionend", function () {
           a.__needUpdate = true;
           a.__focusDOM.style.color = a._colorCursor;
           a.__focusDOM.style.borderLeft = "none";
@@ -2169,20 +2139,30 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
           if (a.$input != null) a.__helpInputEvent = a.$input(a.__helpInputDOM, v(a), a._contentArray) || {};
         });
-        f.bind(this.__focusDOM, "input", function () {
+        h.bind(this.__focusDOM, "input", function () {
           if (a.__needUpdate) {
             _();
 
             if (a.$input != null) a.__helpInputEvent = a.$input(a.__helpInputDOM, v(a), a._contentArray) || {};
           }
         });
-        f.bind(this._el, "keydown", function (e) {
+        var c = false;
+        h.bind(this._el, "keyup", function (e) {
           var t = k(e);
+          if (t == "command") c = false;
+        });
+        h.bind(this._el, "keydown", function (e) {
+          var t = k(e);
+          if (t == "command") c = true;
+
+          if (c && ["a", "c", "x"].indexOf(t) > -1) {
+            t = "ctrl+" + t;
+          }
 
           if (a.__helpInputDOM.innerHTML != "") {
             var n = a.__helpInputEvent[t];
 
-            if (c(n)) {
+            if (f(n)) {
               if (!n()) return;
             } else {
               a.__helpInputDOM.innerHTML = "";
@@ -2209,7 +2189,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             case "ctrl+c":
               {
                 if (a.$$selectIsNotBlank()) {
-                  f.copy(u());
+                  h.copy(u());
 
                   a.__focusDOM.focus();
                 }
@@ -2220,7 +2200,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             case "ctrl+x":
               {
                 if (a.$$selectIsNotBlank()) {
-                  f.copy(u());
+                  h.copy(u());
 
                   a.__focusDOM.focus();
 
@@ -2238,8 +2218,8 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
             case "tab":
               {
-                f.stopPropagation(e);
-                f.preventDefault(e);
+                h.stopPropagation(e);
+                h.preventDefault(e);
                 var r = "";
 
                 for (var i = 0; i < a._tabSpace; i++) {
@@ -2954,9 +2934,9 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           this._readonly = t.readonly || false;
           this._noLineNumber = t.noLineNumber || false;
           this._contentArray = a(t.content) ? (this.$$filterText(t.content) + "").split("\n") : [""];
-          this.$shader = c(t.shader) ? t.shader : u(t.shader) ? K.apply(void 0, _toConsumableArray(t.shader)) : n;
-          this.$format = c(t.format) ? t.format : i;
-          this.$input = c(t.input) ? t.input : null;
+          this.$shader = f(t.shader) ? t.shader : u(t.shader) ? K.apply(void 0, _toConsumableArray(t.shader)) : n;
+          this.$format = f(t.format) ? t.format : i;
+          this.$input = f(t.input) ? t.input : null;
         } else {
           throw new Error("options.el is not a element!");
         }
@@ -2998,7 +2978,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           }
 
           r.__focusDOM.value = e;
-          f.trigger(r.__focusDOM, "input");
+          h.trigger(r.__focusDOM, "input");
 
           r.__focusDOM.focus();
         };
@@ -3013,7 +2993,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         };
       };
 
-      U.prototype.$$textWidth = h;
+      U.prototype.$$textWidth = c;
       U.prototype.$$bestLeftNum = p;
       U.prototype.$$calcCanvasXY = d;
       U.prototype.$$selectIsNotBlank = m;

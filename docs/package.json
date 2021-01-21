@@ -12,7 +12,7 @@
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
-    "@hai2007/nodejs": "^0.1.0",
+    "@hai2007/nodejs": "^1.0.0",
     "autoprefixer": "^9.5.1",
     "babel-loader": "^8.0.6",
     "css-loader": "^2.1.1",

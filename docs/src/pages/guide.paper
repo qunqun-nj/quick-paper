@@ -36,6 +36,7 @@ new QuickPaper({
     },
 
     // 生命周期
+    'beforeCreate':callback,
     'created':callback,
     'beforeMount':callback,
     'mounted':callback,

@@ -3,6 +3,7 @@ import OpenWebEditor from 'open-web-editor';
 
 export default {
     inserted: (el, binding) => {
+
         let code = el.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
         new OpenWebEditor({
 
@@ -13,7 +14,7 @@ export default {
             content: code,
 
             // 是否只读
-            readonly: true,
+            readonly: binding.type != 'editor',
 
             // 着色语言
             shader: [binding.exp || 'javascript', {

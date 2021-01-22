@@ -1,5 +1,5 @@
 /*!
-* quick-paper v0.2.2
+* quick-paper v0.2.3
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */
@@ -1470,6 +1470,7 @@
 
     var qCode = {
         inserted: (el, binding) => {
+
             let code = el.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
             new openWebEditor_min({
 
@@ -1480,7 +1481,7 @@
                 content: code,
 
                 // 是否只读
-                readonly: true,
+                readonly: binding.type != 'editor',
 
                 // 着色语言
                 shader: [binding.exp || 'javascript', {

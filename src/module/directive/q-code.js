@@ -1,11 +1,11 @@
-
+import xhtml from '@hai2007/tool/xhtml';
 import OpenWebEditor from 'open-web-editor';
 
 export default {
     inserted: (el, binding) => {
 
         let code = el.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-        new OpenWebEditor({
+        let owe = new OpenWebEditor({
 
             // 编辑器挂载点
             el,
@@ -42,6 +42,36 @@ export default {
             noLineNumber: !/\n/.test(code)
 
         });
+
+        // 添加复制按钮
+        let btnNode = xhtml.prepend(el, '<span class="copy-btn" title="复制到剪切板">复制<span></span></span>');
+
+        xhtml.bind(btnNode, 'click', () => {
+            owe.copy(() => {
+                alert('复制成功')
+            }, error => {
+                console.log(error);
+                alert('复制失败')
+            });
+        });
+
+        xhtml.setStyles(btnNode, {
+            position: "absolute",
+            right: "10px",
+            top: "6px",
+            border: "none",
+            outline: 0,
+            padding: "4p 10p",
+            transition: "0.2s",
+            "font-size": "12px",
+            cursor: "pointer",
+            "z-index": 1,
+            "line-height": '20px',
+            "background-color": "#f8f8f8",
+            "padding": "5px 10px"
+        });
+
+        el.__owe__ = owe;
 
     }
 };

@@ -1357,6 +1357,262 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       el.value = binding.value;
     }
   };
+  /*!
+   * 💡 - 提供常用的DOM操作方法
+   * https://github.com/hai2007/tool.js/blob/master/xhtml.js
+   *
+   * author hai2007 < https://hai2007.gitee.io/sweethome >
+   *
+   * Copyright (c) 2021-present hai2007 走一步，再走一步。
+   * Released under the MIT license
+   */
+  // 命名空间路径
+
+  var namespace = {
+    svg: "http://www.w3.org/2000/svg",
+    xhtml: "http://www.w3.org/1999/xhtml",
+    xlink: "http://www.w3.org/1999/xlink",
+    xml: "http://www.w3.org/XML/1998/namespace",
+    xmlns: "http://www.w3.org/2000/xmlns/"
+  };
+  /**
+   * 结点操作补充
+   */
+
+  var xhtml = {
+    // 阻止冒泡
+    "stopPropagation": function stopPropagation(event) {
+      event = event || window.event;
+
+      if (event.stopPropagation) {
+        //这是其他非IE浏览器
+        event.stopPropagation();
+      } else {
+        event.cancelBubble = true;
+      }
+    },
+    // 阻止默认事件
+    "preventDefault": function preventDefault(event) {
+      event = event || window.event;
+
+      if (event.preventDefault) {
+        event.preventDefault();
+      } else {
+        event.returnValue = false;
+      }
+    },
+    // 判断是否是结点
+    "isNode": function isNode(param) {
+      return param && (param.nodeType === 1 || param.nodeType === 9 || param.nodeType === 11);
+    },
+    // 绑定事件
+    "bind": function bind(dom, eventType, callback) {
+      if (dom.constructor === Array || dom.constructor === NodeList) {
+        for (var i = 0; i < dom.length; i++) {
+          this.bind(dom[i], eventType, callback);
+        }
+
+        return;
+      }
+
+      if (window.attachEvent) dom.attachEvent("on" + eventType, callback);else dom.addEventListener(eventType, callback, false);
+    },
+    // 去掉绑定事件
+    "unbind": function unbind(dom, eventType, handler) {
+      if (dom.constructor === Array || dom.constructor === NodeList) {
+        for (var i = 0; i < dom.length; i++) {
+          this.unbind(dom[i], eventType, handler);
+        }
+
+        return;
+      }
+
+      if (window.detachEvent) dom.detachEvent('on' + eventType, handler);else dom.removeEventListener(eventType, handler, false);
+    },
+    // 在当前上下文context上查找结点
+    // selectFun可选，返回boolean用以判断当前面对的结点是否保留
+    "find": function find(context, selectFun, tagName) {
+      if (!this.isNode(context)) return [];
+      var nodes = context.getElementsByTagName(tagName || '*');
+      var result = [];
+
+      for (var i = 0; i < nodes.length; i++) {
+        if (this.isNode(nodes[i]) && (typeof selectFun != "function" || selectFun(nodes[i]))) result.push(nodes[i]);
+      }
+
+      return result;
+    },
+    // 寻找当前结点的孩子结点
+    // selectFun可选，返回boolean用以判断当前面对的结点是否保留
+    "children": function children(dom, selectFun) {
+      var nodes = dom.childNodes;
+      var result = [];
+
+      for (var i = 0; i < nodes.length; i++) {
+        if (this.isNode(nodes[i]) && (typeof selectFun != "function" || selectFun(nodes[i]))) result.push(nodes[i]);
+      }
+
+      return result;
+    },
+    // 判断结点是否有指定class
+    // clazzs可以是字符串或数组字符串
+    // notStrict可选，boolean值，默认false表示结点必须包含全部class,true表示至少包含一个即可
+    "hasClass": function hasClass(dom, clazzs, notStrict) {
+      if (clazzs.constructor !== Array) clazzs = [clazzs];
+      var class_str = " " + (dom.getAttribute('class') || "") + " ";
+
+      for (var i = 0; i < clazzs.length; i++) {
+        if (class_str.indexOf(" " + clazzs[i] + " ") >= 0) {
+          if (notStrict) return true;
+        } else {
+          if (!notStrict) return false;
+        }
+      }
+
+      return true;
+    },
+    // 删除指定class
+    "removeClass": function removeClass(dom, clazz) {
+      var oldClazz = " " + (dom.getAttribute('class') || "") + " ";
+      var newClazz = oldClazz.replace(" " + clazz.trim() + " ", " ");
+      dom.setAttribute('class', newClazz.trim());
+    },
+    // 添加指定class
+    "addClass": function addClass(dom, clazz) {
+      if (this.hasClass(dom, clazz)) return;
+      var oldClazz = dom.getAttribute('class') || "";
+      dom.setAttribute('class', oldClazz + " " + clazz);
+    },
+    // 字符串变成结点
+    // isSvg可选，boolean值，默认false表示结点是html，为true表示svg类型
+    "toNode": function toNode(string, isSvg) {
+      var frame; // html和svg上下文不一样
+
+      if (isSvg) frame = document.createElementNS(namespace.svg, 'svg');else frame = document.createElement("div"); // 低版本浏览器svg没有innerHTML，考虑是vue框架中，没有补充
+
+      frame.innerHTML = string;
+      var childNodes = frame.childNodes;
+
+      for (var i = 0; i < childNodes.length; i++) {
+        if (this.isNode(childNodes[i])) return childNodes[i];
+      }
+    },
+    // 主动触发事件
+    "trigger": function trigger(dom, eventType) {
+      //创建event的对象实例。
+      if (document.createEventObject) {
+        // IE浏览器支持fireEvent方法
+        dom.fireEvent('on' + eventType, document.createEventObject());
+      } // 其他标准浏览器使用dispatchEvent方法
+      else {
+          var _event = document.createEvent('HTMLEvents'); // 3个参数：事件类型，是否冒泡，是否阻止浏览器的默认行为
+
+
+          _event.initEvent(eventType, true, false);
+
+          dom.dispatchEvent(_event);
+        }
+    },
+    // 获取样式
+    "getStyle": function getStyle(dom, name) {
+      // 获取结点的全部样式
+      var allStyle = document.defaultView && document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(dom, null) : dom.currentStyle; // 如果没有指定属性名称，返回全部样式
+
+      return typeof name === 'string' ? allStyle.getPropertyValue(name) : allStyle;
+    },
+    // 获取元素位置
+    "offsetPosition": function offsetPosition(dom) {
+      var left = 0;
+      var top = 0;
+      top = dom.offsetTop;
+      left = dom.offsetLeft;
+      dom = dom.offsetParent;
+
+      while (dom) {
+        top += dom.offsetTop;
+        left += dom.offsetLeft;
+        dom = dom.offsetParent;
+      }
+
+      return {
+        "left": left,
+        "top": top
+      };
+    },
+    // 获取鼠标相对元素位置
+    "mousePosition": function mousePosition(dom, event) {
+      var bounding = dom.getBoundingClientRect();
+      if (!event || !event.clientX) throw new Error('Event is necessary!');
+      return {
+        "x": event.clientX - bounding.left,
+        "y": event.clientY - bounding.top
+      };
+    },
+    // 删除结点
+    "remove": function remove(dom) {
+      dom.parentNode.removeChild(dom);
+    },
+    // 设置多个样式
+    "setStyles": function setStyles(dom, styles) {
+      for (var key in styles) {
+        dom.style[key] = styles[key];
+      }
+    },
+    // 获取元素大小
+    "size": function size(dom, type) {
+      var elemHeight, elemWidth;
+
+      if (type == 'content') {
+        //内容
+        elemWidth = dom.clientWidth - (this.getStyle(dom, 'padding-left') + "").replace('px', '') - (this.getStyle(dom, 'padding-right') + "").replace('px', '');
+        elemHeight = dom.clientHeight - (this.getStyle(dom, 'padding-top') + "").replace('px', '') - (this.getStyle(dom, 'padding-bottom') + "").replace('px', '');
+      } else if (type == 'padding') {
+        //内容+内边距
+        elemWidth = dom.clientWidth;
+        elemHeight = dom.clientHeight;
+      } else if (type == 'border') {
+        //内容+内边距+边框
+        elemWidth = dom.offsetWidth;
+        elemHeight = dom.offsetHeight;
+      } else if (type == 'scroll') {
+        //滚动的宽（不包括border）
+        elemWidth = dom.scrollWidth;
+        elemHeight = dom.scrollHeight;
+      } else {
+        elemWidth = dom.offsetWidth;
+        elemHeight = dom.offsetHeight;
+      }
+
+      return {
+        width: elemWidth,
+        height: elemHeight
+      };
+    },
+    // 在被选元素内部的结尾插入内容
+    "append": function append(el, template) {
+      var node = this.isNode(template) ? template : this.toNode(template);
+      el.appendChild(node);
+      return node;
+    },
+    // 在被选元素内部的开头插入内容
+    "prepend": function prepend(el, template) {
+      var node = this.isNode(template) ? template : this.toNode(template);
+      el.insertBefore(node, el.childNodes[0]);
+      return node;
+    },
+    // 在被选元素之后插入内容
+    "after": function after(el, template) {
+      var node = this.isNode(template) ? template : this.toNode(template);
+      el.parentNode.insertBefore(node, el.nextSibling);
+      return node;
+    },
+    // 在被选元素之前插入内容
+    "before": function before(el, template) {
+      var node = this.isNode(template) ? template : this.toNode(template);
+      el.parentNode.insertBefore(node, el);
+      return node;
+    }
+  };
 
   function createCommonjsModule(fn, module) {
     return module = {
@@ -1465,7 +1721,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         return t === "[object Function]" || t === "[object AsyncFunction]" || t === "[object GeneratorFunction]" || t === "[object Proxy]";
       }
 
-      function l(e) {
+      function s(e) {
         if (e === null || _typeof(e) !== "object" || r(e) != "[object Object]") {
           return false;
         }
@@ -1483,8 +1739,8 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         return Object.getPrototypeOf(e) === t;
       }
 
-      var s = function e(t, n) {
-        return n !== null && _typeof(n) === "object" && t.indexOf(n.nodeType) > -1 && !l(n);
+      var l = function e(t, n) {
+        return n !== null && _typeof(n) === "object" && t.indexOf(n.nodeType) > -1 && !s(n);
       };
 
       var a = i;
@@ -1495,7 +1751,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       };
 
       var _ = function e(t) {
-        return s([1, 9, 11], t);
+        return l([1, 9, 11], t);
       };
 
       var h = {
@@ -1585,24 +1841,23 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           };
           return i;
         },
-        copy: function e(t) {
-          var n = this.appendTo(document.body, "<textarea>" + t + "</textarea>");
-          n.select();
+        copy: function e(t, n, r) {
+          var i = this.appendTo(document.body, "<textarea>" + t + "</textarea>");
+          i.select();
 
           try {
-            var r = window.document.execCommand("copy", false, null);
+            var o = window.document.execCommand("copy", false, null);
 
-            if (r) {
-              console.log("已经复制到剪切板！");
+            if (o) {
+              if (f(n)) n();
             } else {
-              console.log("复制到剪切板失败！");
+              if (f(r)) r();
             }
           } catch (e) {
-            console.error(e);
-            console.log("复制到剪切板失败！");
+            if (f(r)) r(e);
           }
 
-          document.body.removeChild(n);
+          document.body.removeChild(i);
         }
       };
 
@@ -1774,17 +2029,17 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
           e = this.__showDOM.childNodes;
 
-          for (var l = this.__diff.beginNum; l < this.__formatData.length; l++) {
-            e[l].getElementsByTagName("em")[0].innerText = l + 1;
+          for (var s = this.__diff.beginNum; s < this.__formatData.length; s++) {
+            e[s].getElementsByTagName("em")[0].innerText = s + 1;
           }
         } else if (this.__diff != "not update") {
-          var s = "";
+          var l = "";
 
           this.__formatData.forEach(function (e, t) {
-            s += n.$$toTemplate(e, t, n._noLineNumber);
+            l += n.$$toTemplate(e, t, n._noLineNumber);
           });
 
-          this.__showDOM.innerHTML = s;
+          this.__showDOM.innerHTML = l;
         }
 
         this.__diff = "not update";
@@ -1799,26 +2054,26 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
 
       function b() {
-        var l = this;
+        var s = this;
 
-        var s = this.__selectCanvas.getContext("2d");
+        var l = this.__selectCanvas.getContext("2d");
 
-        s.fillStyle = this._colorSelect;
-        s.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
+        l.fillStyle = this._colorSelect;
+        l.clearRect(0, 0, this.__selectCanvas.scrollWidth, this.__selectCanvas.scrollHeight);
 
         var e = function e(t, n, r) {
-          var i = l.$$calcCanvasXY(t, r);
-          var o = l.$$calcCanvasXY(n, r);
+          var i = s.$$calcCanvasXY(t, r);
+          var o = s.$$calcCanvasXY(n, r);
 
           if (t == n && t == 0) {
-            s.fillRect(i.x, i.y, 5, 21);
+            l.fillRect(i.x, i.y, 5, 21);
           } else {
-            s.fillRect(i.x, i.y, o.x - i.x, 21);
+            l.fillRect(i.x, i.y, o.x - i.x, 21);
           }
         };
 
         if (this.__cursor1.lineNum == this.__cursor2.lineNum && this.__cursor1.leftNum == this.__cursor2.leftNum) return;
-        s.beginPath();
+        l.beginPath();
 
         if (this.__cursor1.lineNum == this.__cursor2.lineNum) {
           e(this.__cursor1.leftNum, this.__cursor2.leftNum, this.__cursor1.lineNum);
@@ -1991,21 +2246,21 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         var r = e.shiftKey ? "shift+" : "",
             i = e.altKey ? "alt+" : "",
             o = e.ctrlKey ? "ctrl+" : "";
-        var l = "",
-            s = o + r + i;
+        var s = "",
+            l = o + r + i;
 
         if (M.indexOf(n[0]) >= 0) {
           n[0] = n[1] = "";
         }
 
         var a = e.code == "Key" + e.key && !r;
-        l = s + (s == "" && a ? n[1] : n[0]);
+        s = l + (l == "" && a ? n[1] : n[0]);
 
         if (n[0] == "") {
-          l = l.replace(/\+$/, "");
+          s = s.replace(/\+$/, "");
         }
 
-        return l;
+        return s;
       }
 
       function P() {
@@ -2228,15 +2483,15 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
                 if (a.$$selectIsNotBlank()) {
                   var o = a.__cursor1.lineNum,
-                      l = a.__cursor2.lineNum;
+                      s = a.__cursor2.lineNum;
 
-                  if (o > l) {
+                  if (o > s) {
                     o = a.__cursor2.lineNum;
-                    l = a.__cursor1.lineNum;
+                    s = a.__cursor1.lineNum;
                   }
 
-                  for (var s = o; s <= l; s++) {
-                    a._contentArray[s] = r + a._contentArray[s];
+                  for (var l = o; l <= s; l++) {
+                    a._contentArray[l] = r + a._contentArray[l];
                   }
 
                   a.__cursor1.leftNum += a._tabSpace;
@@ -2375,10 +2630,10 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             i += 1;
           }
 
-          var l = Math.min(t.length, e.length);
+          var s = Math.min(t.length, e.length);
 
-          if (n + i >= l) {
-            i = l - n - 1;
+          if (n + i >= s) {
+            i = s - n - 1;
             if (i < 0) i = 0;
           }
 
@@ -2410,16 +2665,16 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         };
 
         var o = "";
-        var l = "tag";
+        var s = "tag";
 
-        var s = function e() {
+        var l = function e() {
           if (o != "") {
             r.push({
               color: {
                 tag: t.selector,
                 attr: t.attrKey,
                 string: t.attrValue
-              }[l],
+              }[s],
               content: o
             });
           }
@@ -2429,7 +2684,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
         while (true) {
           if (e(2) == "/*") {
-            s();
+            l();
 
             while (e(2) !== "*/" && i < n.length) {
               o += n[i++];
@@ -2443,7 +2698,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             o = "";
           } else if (["'", '"'].indexOf(e(1)) > -1) {
             var a = e(1);
-            s();
+            l();
 
             do {
               o += n[i++];
@@ -2461,7 +2716,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             });
             o = "";
           } else if ([":", "{", "}", ";"].indexOf(e(1)) > -1) {
-            s();
+            l();
             r.push({
               color: t.insign,
               content: e(1)
@@ -2469,17 +2724,17 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             o = "";
 
             if (e(1) == "{" || e(1) == ";") {
-              l = "attr";
+              s = "attr";
             } else if (e(1) == "}") {
-              l = "tag";
+              s = "tag";
             } else {
-              l = "string";
+              s = "string";
             }
 
             i += 1;
           } else {
             if (i >= n.length) {
-              s();
+              l();
               break;
             } else {
               o += n[i++];
@@ -2502,7 +2757,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
         var o = "";
 
-        var l = function e() {
+        var s = function e() {
           if (o != "") {
             if (o[0] == "(") {
               r.push({
@@ -2523,7 +2778,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
         while (true) {
           if (e(2) == "/*") {
-            l();
+            s();
 
             while (e(2) !== "*/" && i < n.length) {
               o += n[i++];
@@ -2536,7 +2791,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             i += 2;
             o = "";
           } else if (e(2) == "//") {
-            l();
+            s();
 
             while (e(1) !== "\n" && i < n.length) {
               o += n[i++];
@@ -2548,22 +2803,22 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             });
             o = "";
           } else if (["'", '"', "`"].indexOf(e(1)) > -1) {
-            var s = e(1);
-            l();
+            var l = e(1);
+            s();
 
             do {
               o += n[i++];
-            } while (e(1) != s && i < n.length);
+            } while (e(1) != l && i < n.length);
 
-            if (e(1) != s) {
-              s = "";
+            if (e(1) != l) {
+              l = "";
             } else {
               i += 1;
             }
 
             r.push({
               color: t.string,
-              content: o + s
+              content: o + l
             });
             o = "";
           } else if (e(1) == "(" && (o[0] == " " || i - o.length - 1 >= 0 && n[i - o.length - 1] == " ")) {
@@ -2581,7 +2836,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             i += 1;
             o = "(";
           } else if ([";", "{", "}", "(", ")", ".", "\n", "=", "+", ">", "<", "[", "]", "-", "*", "/", "^", "*", "!"].indexOf(e(1)) > -1) {
-            l();
+            s();
             r.push({
               color: t.insign,
               content: e(1)
@@ -2597,7 +2852,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             i += 1;
           } else {
             if (i >= n.length) {
-              l();
+              s();
               break;
             } else {
               o += n[i++];
@@ -2612,59 +2867,59 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         var i = [];
         var o = 0;
 
-        var l = function e(t) {
+        var s = function e(t) {
           return n.substring(o, t + o > n.length ? n.length : t + o);
         };
 
-        var s = "";
+        var l = "";
 
         var e = function e() {
-          if (s != "") {
+          if (l != "") {
             i.push({
               color: r.text,
-              content: s
+              content: l
             });
           }
 
-          s = "";
+          l = "";
         };
 
         var t = function e() {
           var t = " ";
-          if (l(1) == '"') t = '"';
-          if (l(1) == "'") t = "'";
+          if (s(1) == '"') t = '"';
+          if (s(1) == "'") t = "'";
 
           do {
-            s += n[o++];
-          } while (l(1) != t && o < n.length);
+            l += n[o++];
+          } while (s(1) != t && o < n.length);
 
           if (t != " " && o < n.length) {
-            s += t;
+            l += t;
             o += 1;
           }
 
           i.push({
             color: r.attrValue,
-            content: s
+            content: l
           });
-          s = "";
+          l = "";
         };
 
         while (true) {
-          if (l(4) == "\x3c!--") {
+          if (s(4) == "\x3c!--") {
             e();
 
-            while (l(3) !== "--\x3e" && o < n.length) {
-              s += n[o++];
+            while (s(3) !== "--\x3e" && o < n.length) {
+              l += n[o++];
             }
 
             i.push({
               color: r.annotation,
-              content: s + l(3)
+              content: l + s(3)
             });
             o += 3;
-            s = "";
-          } else if (l(2) == "</") {
+            l = "";
+          } else if (s(2) == "</") {
             e();
             i.push({
               color: r.insign,
@@ -2672,16 +2927,16 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             });
             o += 2;
 
-            while (l(1) !== ">" && o < n.length) {
-              s += n[o++];
+            while (s(1) !== ">" && o < n.length) {
+              l += n[o++];
             }
 
-            if (s != "") {
+            if (l != "") {
               i.push({
                 color: r.node,
-                content: s
+                content: l
               });
-              s = "";
+              l = "";
 
               if (o < n.length) {
                 i.push({
@@ -2691,7 +2946,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
                 o += 1;
               }
             }
-          } else if (l(1) == "<" && l(2) != "< ") {
+          } else if (s(1) == "<" && s(2) != "< ") {
             var a = "";
             e();
             i.push({
@@ -2700,24 +2955,24 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
             });
             o += 1;
 
-            while (l(1) != ">" && l(1) != " " && o < n.length) {
-              s += n[o++];
+            while (s(1) != ">" && s(1) != " " && o < n.length) {
+              l += n[o++];
             }
 
-            if (s != "") {
-              if (s == "style" || s == "script") {
-                a = "</" + s + ">";
+            if (l != "") {
+              if (l == "style" || l == "script") {
+                a = "</" + l + ">";
               }
 
               i.push({
                 color: r.node,
-                content: s
+                content: l
               });
-              s = "";
+              l = "";
 
               if (o < n.length) {
                 while (o < n.length) {
-                  if (l(1) == ">") {
+                  if (s(1) == ">") {
                     e();
                     i.push({
                       color: r.insign,
@@ -2725,48 +2980,48 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
                     });
                     o += 1;
                     break;
-                  } else if (l(1) != " ") {
+                  } else if (s(1) != " ") {
                     e();
 
-                    if (l(1) != '"' && l(1) != "'") {
-                      while (l(1) != "=" && l(1) != ">" && o < n.length && l(1) != " ") {
-                        s += n[o++];
+                    if (s(1) != '"' && s(1) != "'") {
+                      while (s(1) != "=" && s(1) != ">" && o < n.length && s(1) != " ") {
+                        l += n[o++];
                       }
 
-                      if (s != "") {
+                      if (l != "") {
                         i.push({
                           color: r.attrKey,
-                          content: s
+                          content: l
                         });
-                        s = "";
+                        l = "";
 
-                        if (l(1) == "=") {
+                        if (s(1) == "=") {
                           i.push({
                             color: r.insign,
                             content: "="
                           });
                           o += 1;
 
-                          if (o < n.length && l(1) != " " && l(1) != ">") {
+                          if (o < n.length && s(1) != " " && s(1) != ">") {
                             t();
                           }
                         }
                       } else {
-                        s += n[o++];
+                        l += n[o++];
                       }
-                    } else if (l(1) == "=") {
+                    } else if (s(1) == "=") {
                       i.push({
                         color: r.insign,
                         content: "="
                       });
                       o += 1;
                     } else {
-                      if (o < n.length && l(1) != " " && l(1) != ">") {
+                      if (o < n.length && s(1) != " " && s(1) != ">") {
                         t();
                       }
                     }
                   } else {
-                    s += n[o++];
+                    l += n[o++];
                   }
                 }
               }
@@ -2774,10 +3029,10 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
 
             if (a != "") {
               var u = o,
-                  _ = s;
+                  _ = l;
 
-              while (l(a.length) != a && o < n.length) {
-                s += n[o++];
+              while (s(a.length) != a && o < n.length) {
+                l += n[o++];
               }
 
               if (o < n.length) {
@@ -2785,16 +3040,16 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
                 var f = {
                   "style>": j,
                   "script>": L
-                }[c](s, {
+                }[c](l, {
                   "style>": r._css,
                   "script>": r._javascript
                 }[c]);
                 f.forEach(function (e) {
                   i.push(e);
                 });
-                s = "";
+                l = "";
               } else {
-                s = _;
+                l = _;
                 o = u;
               }
             }
@@ -2803,7 +3058,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
               e();
               break;
             } else {
-              s += n[o++];
+              l += n[o++];
             }
           }
         }
@@ -2991,6 +3246,10 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
           r.$$updateView();
           r.$$initView();
         };
+
+        this.copy = function (e, t) {
+          h.copy(r.valueOf(), e, t);
+        };
       };
 
       U.prototype.$$textWidth = c;
@@ -3020,7 +3279,7 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
   var qCode = {
     inserted: function inserted(el, binding) {
       var code = el.innerHTML.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-      new openWebEditor_min({
+      var owe = new openWebEditor_min({
         // 编辑器挂载点
         el: el,
         // 初始化文本
@@ -3061,7 +3320,32 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
         // 是否隐藏行号
         // 如果只有一行，就不显示行号(编辑界面一定显示)
         noLineNumber: !/\n/.test(code)
+      }); // 添加复制按钮
+
+      var btnNode = xhtml.prepend(el, '<span class="copy-btn" title="复制到剪切板">复制<span></span></span>');
+      xhtml.bind(btnNode, 'click', function () {
+        owe.copy(function () {
+          alert('复制成功');
+        }, function (error) {
+          console.log(error);
+          alert('复制失败');
+        });
       });
+      xhtml.setStyles(btnNode, _defineProperty2({
+        position: "absolute",
+        right: "10px",
+        top: "6px",
+        border: "none",
+        outline: 0,
+        padding: "4p 10p",
+        transition: "0.2s",
+        "font-size": "12px",
+        cursor: "pointer",
+        "z-index": 1,
+        "line-height": '20px',
+        "background-color": "#f8f8f8"
+      }, "padding", "5px 10px"));
+      el.__owe__ = owe;
     }
   };
   var component = {

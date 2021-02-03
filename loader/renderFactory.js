@@ -36,7 +36,7 @@ module.exports = function (templateObj, id) {
 
                 pnode.attrs['data-quickpaper-' + id] = "";
 
-                return `createElement('${pnode.name}',${JSON.stringify(pnode.attrs)},${childrenRender},)`;
+                return `createElement('${pnode.name}',${JSON.stringify(pnode.attrs)},${childrenRender})`;
 
             }
 

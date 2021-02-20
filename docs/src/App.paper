@@ -56,6 +56,21 @@
     };
 </script>
 <style lang="scss">
+    header {
+        position: relative;
+    }
+
+    header::before {
+        content: "文档框架";
+        position: absolute;
+        font-size: 12px;
+        background-color: #f66448;
+        color: white;
+        padding: 5px;
+        right: -20px;
+        top: 0;
+    }
+
     [quickpaper] {
         white-space: nowrap;
 

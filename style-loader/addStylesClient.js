@@ -20,26 +20,32 @@ export default function addStylesClient(parentId, list, isQuickPaperStyle) {
         style = style.replace(/( {0,}),/g, ",");
 
         var temp = "";
-        var isSpecial = false, isContent = false;
+        // 分别表示：是否处于注释中、是否处于内容中、是否由于特殊情况在遇到{前完成了hash
+        var isSpecial = false, isContent = false, hadComplete = false;
         for (var i = 0; i < style.length; i++) {
-            if (style[i] == '{' && !isSpecial) {
-                isContent = true;
+            if (style[i] == ':' && !isSpecial && !hadComplete && !isContent) {
+                hadComplete = true;
                 temp += "[" + parentId + "]";
+            } else if (style[i] == '{' && !isSpecial) {
+                isContent = true;
+                if (!hadComplete) temp += "[" + parentId + "]";
             } else if (style[i] == '}' && !isSpecial) {
                 isContent = false;
+                hadComplete = false;
             } else if (style[i] == '/' && style[i + 1] == '*') {
                 isSpecial = true;
             } else if (style[i] == '*' && style[i + 1] == '/') {
                 isSpecial = false;
             } else if (style[i] == ',' && !isSpecial && !isContent) {
-                temp += "[" + parentId + "]";
+                if (!hadComplete) temp += "[" + parentId + "]";
+                hadComplete = false;
             }
 
-            temp+=style[i];
+            temp += style[i];
 
         }
 
-        style=temp;
+        style = temp;
 
     }
 

@@ -112,11 +112,6 @@ chrome://inspect/#devices
 
 接着，请点击“ Open dedicated DevTools for Node ”后进入调试界面。
 
-## 联系我们
-
-- QQ: 2501482523
-- Email: 2501482523@qq.com
-
 开源协议
 ---------------------------------------
 [MIT](https://github.com/hai2007/quick-paper/blob/master/LICENSE)

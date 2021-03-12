@@ -1,3 +1,7 @@
+<p align='center'>
+<img src='./docs/src/assets/logo.png'>
+</p>
+
 # QuickPaper - 📚 用于快速构建文档的前端框架
 
 <p>
@@ -116,4 +120,4 @@ chrome://inspect/#devices
 ---------------------------------------
 [MIT](https://github.com/hai2007/quick-paper/blob/master/LICENSE)
 
-Copyright (c) 2020-2021 [hai2007](https://hai2007.gitee.io/sweethome/) 走一步，再走一步。
+Copyright (c) 2019-2021 [hai2007](https://hai2007.gitee.io/sweethome/) 走一步，再走一步。

@@ -1,5 +1,5 @@
 /*!
-* quick-paper v0.3.1
+* quick-paper v0.4.0
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */

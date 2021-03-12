@@ -11,14 +11,6 @@ if (!fs.existsSync('dist')) {
   fs.mkdirSync('dist');
 }
 
-console.log(
-  "\x1B[30m" +
-  "📚 Quick Paper" +
-  "\n------------------------------------------------------------" +
-  "\n用于快速构建文档的前端框架。" +
-  "\x1B[39m\n"
-);
-
 let banner = `/*!
 * quick-paper v`+ packageJSON.version + `
 * (c) 2019-`+ new Date().getFullYear() + ` ` + packageJSON.author + ` ` + packageJSON.repository.url + `

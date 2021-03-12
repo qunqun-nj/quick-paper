@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@hai2007/polyfill": "^0.1.1",
-    "@hai2007/style": "^0.2.1",
-    "clunch": "^1.0.1"
+    "@hai2007/style": "^0.2.3",
+    "clunch": "^1.4.4"
   }
 }

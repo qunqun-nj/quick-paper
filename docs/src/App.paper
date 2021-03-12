@@ -1,137 +1,97 @@
 <template>
-    <div>
-        <header>
-            Quick Paper
-        </header>
-        <span>说明&amp;指南</span>
-        <ul>
-            <li @click='loadpage("guide")'>写在前面</li>
-            <li @click='loadpage("environment")'>基于webpack开发</li>
-            <li @click='loadpage("directive")'>自定义指令强化标签属性</li>
-        </ul>
-
-        <span>内置接口</span>
-        <ul>
-            <li @click='loadpage("innerApiDirective")'>单一的内置指令</li>
-            <li @click='loadpage("innerApiComponent")'>单一的内置组件</li>
-        </ul>
-
-        <footer onclick='window.location.href="https://github.com/hai2007/quick-paper"'>
-            Fork Me On GitHub
-        </footer>
-    </div>
-    <div>
+    <header>
+        <div>
+            <a href="https://github.com/hai2007/quick-paper" target="_blank">
+                QuickPaper - 📚 用于快速构建文档的前端框架
+            </a>
+        </div>
+    </header>
+    <nav>
+        <button @click='loadpage("environment")' :active='url=="environment"?"yes":"no"'>开发环境搭建</button>
+        <button @click='loadpage("course")' :active='url=="course"?"yes":"no"'>如何使用？</button>
+        <button @click='loadpage("directive")' :active='url=="directive"?"yes":"no"'>指令列表</button>
+        <button @click='loadpage("component")' :active='url=="component"?"yes":"no"'>组件列表</button>
+    </nav>
+    <div class='content'>
         <component :is='page'></component>
     </div>
 </template>
 <script>
 
     let pages = {
-        guide: () => import('./pages/guide.paper'),
         environment: () => import('./pages/environment.paper'),
+        course: () => import('./pages/course.paper'),
         directive: () => import('./pages/directive.paper'),
-
-        // 内置接口
-        innerApiDirective: () => import('./pages/inner-api/directive.paper'),
-        innerApiComponent: () => import('./pages/inner-api/component.paper')
+        component: () => import('./pages/component.paper')
     };
 
     export default {
         data() {
             return {
-                page: null
+                page: null,
+                url: ""
             };
         },
-        created() {
-            console.log(1);
-            this.loadpage('guide');
+        mounted() {
+            let routers = (window.location.href + "#").split("#")[1].replace(/\?.{0,}$/, '').replace(/^\//, '').replace(/\/$/, '').split('/');
+            this.loadpage(routers[0] == "" ? 'environment' : routers[0]);
         },
         methods: {
             loadpage(url) {
                 pages[url]().then(data => {
+                    window.location.href = "#/" + url;
+                    this.url = url;
                     this.page = data.default;
-                });;
+                });
             }
         }
     };
 </script>
 <style lang="scss">
-    header {
-        position: relative;
-    }
-
-    header::before {
-        content: "文档框架";
-        position: absolute;
-        font-size: 12px;
-        background-color: #f66448;
-        color: white;
-        padding: 5px;
-        right: -20px;
-        top: 0;
-    }
-
     [quickpaper] {
-        white-space: nowrap;
+        &>header {
+            background-image: url('./assets/bg.png');
+            font-family: monospace;
 
-        &>div {
-            white-space: normal;
-            display: inline-block;
-            vertical-align: top;
-            padding: .2rem;
-            height: 100vh;
-            overflow: auto;
+            &>div {
+                background-image: url('./assets/logo.jpg');
+                background-repeat: no-repeat;
+                background-position: right center;
+                height: 3rem;
+                line-height: 3rem;
+                padding-left: .5rem;
+                font-size: .24rem;
 
-            &:last-child {
-                width: calc(100vw - 2.6rem);
-            }
+                &>a {
+                    color: white;
 
-            &:first-child {
-                background: #fafafa;
-                width: 2.6rem;
-
-                &>header {
-                    margin-bottom: .4rem;
-                    font-size: .25rem;
-                    text-align: center;
-                    color: #d66eac;
-                    padding-top: 1.4rem;
-                    background-image: url(./assets/logo.png);
-                    background-repeat: no-repeat;
-                    background-position: center top;
-                    cursor: pointer;
-                }
-
-                &>span {
-                    color: #454545;
-                    font-size: .18rem;
-                    margin-top: .2rem;
-                    display: block;
-                }
-
-                &>ul {
-                    margin-top: .2rem;
-
-                    &>li {
-                        color: #2194CE;
-                        text-decoration: none;
-                        line-height: 1.8em;
-                        cursor: pointer;
-                        position: relative;
+                    &:hover {
+                        text-decoration: underline;
                     }
                 }
+            }
+        }
 
-                &>footer {
-                    background-color: #529bcf;
+        &>nav {
+            text-align: center;
+
+            &>button {
+                border: none;
+                outline: none;
+                margin: 10px;
+                cursor: pointer;
+                padding: 10px;
+
+                &[active='yes'] {
                     color: white;
-                    text-align: center;
-                    line-height: 0.3rem;
-                    margin-top: .3rem;
-                    cursor: pointer;
+                    background-color: #101010;
                 }
             }
+        }
 
-
+        &>.content {
+            max-width: 10rem;
+            margin: auto;
         }
     }
 </style>

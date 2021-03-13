@@ -12,6 +12,7 @@
         <button @click='loadpage("directive")' :active='url=="directive"?"yes":"no"'>指令列表</button>
         <button @click='loadpage("component")' :active='url=="component"?"yes":"no"'>组件列表</button>
         <button @click='loadpage("method")' :active='url=="method"?"yes":"no"'>常用方法</button>
+        <button @click='loadpage("plug")' :active='url=="plug"?"yes":"no"'>内置插件</button>
     </nav>
     <div class='content'>
         <component :is='page'></component>
@@ -33,7 +34,8 @@
         course: () => import('./pages/course.paper'),
         directive: () => import('./pages/directive.paper'),
         component: () => import('./pages/component.paper'),
-        method: () => import('./pages/method.paper')
+        method: () => import('./pages/method.paper'),
+        plug: () => import('./pages/plug.paper')
     };
 
     import QuickPaper from 'quick-paper';
@@ -47,7 +49,7 @@
         },
         mounted() {
             let routers = QuickPaper.urlFormat(window.location.href).router;
-            this.loadpage(['environment', 'course', 'directive', 'component', 'method'].indexOf(routers[0]) < 0 ? 'course' : routers[0]);
+            this.loadpage(['environment', 'course', 'directive', 'component', 'method', 'plug'].indexOf(routers[0]) < 0 ? 'course' : routers[0]);
         },
         methods: {
             loadpage(url) {
@@ -118,7 +120,8 @@
             line-height: 2em;
             padding: .2rem 0;
             font-size: .14rem;
-            &>a{
+
+            &>a {
                 padding: 0 .05rem;
             }
         }

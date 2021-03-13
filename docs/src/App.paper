@@ -82,6 +82,10 @@
                 cursor: pointer;
                 padding: 10px;
 
+                &:hover {
+                    text-decoration: underline;
+                }
+
                 &[active='yes'] {
                     color: white;
                     background-color: #101010;

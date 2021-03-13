@@ -1,5 +1,5 @@
 <p align='center'>
-<img src='./docs/src/assets/logo.png'>
+    <img src='./logo.png'>
 </p>
 
 # QuickPaper - 📚 用于快速构建文档的前端框架

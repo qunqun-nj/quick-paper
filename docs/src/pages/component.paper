@@ -22,6 +22,8 @@ new QuickPaper({
 });
     </pre>
     <p>
-        在任何时候通过this.page=newPage的形式修改都可以同步更新组件。
+        在任何时候通过
+        <span class="important">this.page=newPage</span>
+        的形式修改都可以同步更新组件。
     </p>
 </template>

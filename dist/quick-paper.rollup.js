@@ -1,5 +1,5 @@
 /*!
-* quick-paper v0.4.0
+* quick-paper v0.4.1
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */
@@ -1866,6 +1866,31 @@
         }
     };
 
+    function urlFormat (url) {
+
+        let splitTemp = url.split('?');
+        let routerTemp = (splitTemp[0] + "#").split("#")[1].replace(/^\//, '').replace(/\/$/, '').split('/');
+        let paramTemp = splitTemp[1] || "";
+
+        let paramResult, paramArray;
+        if (paramTemp == "") {
+            paramResult = {};
+        } else {
+            paramArray = paramTemp.split("&"), paramResult = {};
+            paramArray.forEach(item => {
+                let temp = item.split("=");
+                paramResult[temp[0]] = temp[1];
+            });
+        }
+
+        let resultData = {
+            router: routerTemp[0] == '' ? [] : routerTemp,
+            params: paramResult
+        };
+
+        return resultData;
+    }
+
     /**
      * 备注：
      * $$开头的表示内部方法，__开头的表示内部资源
@@ -1881,6 +1906,7 @@
      QuickPaper.directive('qModel', qModel);
      QuickPaper.directive('qCode', qCode);
      QuickPaper.component('component', component);
+     QuickPaper.urlFormat = urlFormat;
 
     // 把组件挂载到页面中去
     QuickPaper.prototype.$$mount = function () {

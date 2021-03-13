@@ -9,7 +9,7 @@ function _defineProperty2(obj, key, value) { if (key in obj) { Object.defineProp
 function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof2 = function _typeof2(obj) { return typeof obj; }; } else { _typeof2 = function _typeof2(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof2(obj); }
 
 /*!
-* quick-paper v0.4.0
+* quick-paper v0.4.1
 * (c) 2019-2021 你好2007 git+https://github.com/hai2007/quick-paper.git
 * License: MIT
 */
@@ -3379,6 +3379,29 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
       }
     }
   };
+
+  function urlFormat(url) {
+    var splitTemp = url.split('?');
+    var routerTemp = (splitTemp[0] + "#").split("#")[1].replace(/^\//, '').replace(/\/$/, '').split('/');
+    var paramTemp = splitTemp[1] || "";
+    var paramResult, paramArray;
+
+    if (paramTemp == "") {
+      paramResult = {};
+    } else {
+      paramArray = paramTemp.split("&"), paramResult = {};
+      paramArray.forEach(function (item) {
+        var temp = item.split("=");
+        paramResult[temp[0]] = temp[1];
+      });
+    }
+
+    var resultData = {
+      router: routerTemp[0] == '' ? [] : routerTemp,
+      params: paramResult
+    };
+    return resultData;
+  }
   /**
    * 备注：
    * $$开头的表示内部方法，__开头的表示内部资源
@@ -3388,12 +3411,14 @@ function _typeof2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "funct
    */
   // 挂载全局方法
 
+
   initGlobalAPI(QuickPaper);
   QuickPaper.directive('qBind', qBind);
   QuickPaper.directive('qOn', qOn);
   QuickPaper.directive('qModel', qModel);
   QuickPaper.directive('qCode', qCode);
-  QuickPaper.component('component', component); // 把组件挂载到页面中去
+  QuickPaper.component('component', component);
+  QuickPaper.urlFormat = urlFormat; // 把组件挂载到页面中去
 
   QuickPaper.prototype.$$mount = function () {
     if (isFunction(this._options.render)) {

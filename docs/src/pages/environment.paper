@@ -2,4 +2,38 @@
     <h2>
         开发环境搭建
     </h2>
+    <p>
+        首先你需要通过命令行安装QuickPaper，就像这样：
+    </p>
+    <pre q-code>npm install --save quick-paper</pre>
+    <p>
+        然后，我们需要配置webpack如何解析.paper文件：
+    </p>
+    <pre q-code>
+// webpack.config.js
+const QuickPaperLoaderPlugin = require('quick-paper/loader-plug/index.js');
+
+module.exports = {
+    // ......
+     module: {
+        rules: [{
+            test: /\.paper$/,
+            exclude: /node_modules/,
+            loader: ['quick-paper/loader/index.js']
+        },{
+            test: /\.(css|scss)$/,
+            loader: ['quick-paper/style-loader/index.js', 'css-loader', 'postcss-loader', 'sass-loader']
+        },
+            // ......
+        ]
+     },
+    plugins: [
+        new QuickPaperLoaderPlugin()
+    ]
+    // ......
+};
+    </pre>
+    <p>
+        配置好了以后，基本的开发环境就搭建好了！
+    </p>
 </template>

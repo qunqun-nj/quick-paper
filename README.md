@@ -1,5 +1,7 @@
 <p align='center'>
-    <img src='./logo.png'>
+    <a href='https://hai2007.gitee.io/quick-paper' target='_blank'>
+        <img src='./logo.png'>
+    </a>
 </p>
 
 # QuickPaper - 📚 用于快速构建文档的前端框架

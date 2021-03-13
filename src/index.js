@@ -22,6 +22,9 @@ import qCode from './module/directive/q-code'; QuickPaper.directive('qCode', qCo
 // 挂载内置组件
 import component from './module/component/component'; QuickPaper.component('component', component);
 
+// 挂在内置方法
+import urlFormat from './module/method/urlFormat';; QuickPaper.urlFormat = urlFormat;
+
 // 把组件挂载到页面中去
 QuickPaper.prototype.$$mount = function () {
 

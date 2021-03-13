@@ -84,4 +84,11 @@
         此外，如果你希望显示的区域可编辑，可以这样设置：
     </p>
     <pre q-code='html'>&lt;pre q-code:editor='javascript'&gt;console.log('你好');&lt;/pre&gt;</pre>
+    <p>
+        对于可编辑区域，你可能希望获取当前编辑器的内容，直接使用如下方法即可：
+    </p>
+    <pre q-code>
+// 其中el是原生DOM结点，也就是q-code指令所在的结点
+var code = el.__owe__.valueOf();
+    </pre>
 </template>
